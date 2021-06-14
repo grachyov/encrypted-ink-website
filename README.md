@@ -1,2 +1,1 @@
-# encrypted-ink-website
-# encrypted-ink-website
+# Encrypted Ink Website

@@ -17,8 +17,14 @@
 
         body {
             background-color: black;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 32px;
+        }
+
+        body,
+        h2,
+        h3 {
+            font-size: 50px;
+            font-weight: normal;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         h2 {
@@ -51,7 +57,7 @@
         }
 
         #title {
-            
+
             grid-column-start: 1;
             grid-column-end: 3;
         }
@@ -66,6 +72,7 @@
         }
 
         @media screen and (max-width: 768px) {
+
             body,
             h2,
             h3 {
@@ -135,13 +142,13 @@
     </div>
     <script>
         const searchParams = new URLSearchParams(window.location.search);
-        document.getElementById("deeplink").href = 
+        document.getElementById("deeplink").href =
             `encryptedink://wc?uri=${searchParams.get('uri')}`;
 
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const needShowArrow = () => window.innerWidth > 768 && isSafari;
         const setArrow = () => {
-            document.getElementById('arrow').style.display = 
+            document.getElementById('arrow').style.display =
                 needShowArrow() ? 'block' : 'none';
         }
         setArrow();

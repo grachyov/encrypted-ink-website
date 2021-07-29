@@ -7,7 +7,8 @@
 
     <style>
         html,
-        body {
+        body,
+        .container {
             height: 100vh;
             width: 100%;
             margin: 0;
@@ -19,6 +20,12 @@
             background-color: black;
         }
 
+        .container {
+            display: flex;
+            position: relative;
+            justify-content: center;
+        }
+
         body,
         h2,
         h3 {
@@ -28,11 +35,11 @@
         }
 
         h2 {
-            color: blue;
+            color: #1B1CA9;
         }
 
         h3 {
-            color: aqua;
+            color: #275B5A;
         }
 
         a {
@@ -41,11 +48,12 @@
 
         #grid {
             display: grid;
-            width: 100%;
+            padding: 0 60px;
+            box-sizing: border-box;
 
-            grid-template-columns: repeat(3, 30%);
+            grid-template-columns: 400px 250px 400px;
             grid-template-rows: repeat(3, 33vh);
-            column-gap: 5%;
+            column-gap: 50px;
         }
 
         #grid div {
@@ -56,19 +64,26 @@
             padding: 5px;
         }
 
-        #title {
-
-            grid-column-start: 1;
-            grid-column-end: 3;
-        }
-
         #img {
             z-index: -1;
+            transform: scale(0.9);
         }
 
         #footer {
             grid-column-start: 1;
             grid-column-end: 4;
+        }
+
+        @media screen and (max-width: 1280px) {
+            #grid {
+                grid-template-columns: 200px 200px 200px;
+            }
+
+            body,
+            h2,
+            h3 {
+                font-size: 32px;
+            }
         }
 
         @media screen and (max-width: 768px) {
@@ -81,7 +96,7 @@
 
             #grid {
                 grid-template-columns: repeat(1, 100%);
-                grid-template-rows: 20vh 0 repeat(4, 20vh);
+                grid-template-rows: 20vh 0 0 repeat(4, 20vh);
             }
 
             #title {
@@ -101,43 +116,65 @@
 
         #arrow {
             position: absolute;
-            top: 0;
-            right: 30px;
+            top: 15px;
+            right: 40px;
             width: calc(15vw - 30px);
             height: 30vh;
-            transform-origin: 50% 50%;
+            transform-origin: 100% 0;
         }
 
-        #arrow img {
-            width: 100%;
-            height: 100%;
+        #arrow-1,
+        #arrow-2,
+        #arrow-3 {
             position: absolute;
-            top: 40px;
-            transform: rotate(-15deg);
+            transform-origin: 50% 0;
+            border-radius: 3px;
+            top: 0;
+            right: 0;
+            background-color: red;
+            width: 3px;
+            height: 15px;
+        }
+
+        #arrow-1 {
+            transform: translateY(-1px);
+        }
+
+        #arrow-2 {
+            transform: rotate(30deg);
+        }
+
+        #arrow-3 {
+            transform: rotate(-30deg);
         }
     </style>
 </head>
 
 <body>
     <div id="arrow">
-        <img src="arrow.svg" alt="yo" />
+        <div id="arrow-1"></div>
+        <div id="arrow-2"></div>
+        <div id="arrow-3"></div>
     </div>
-    <div id="grid">
-        <div id="title">
-            <h2>Available on the App Store</h2>
-        </div>
-        <div></div>
-        <div>
-            <a href="https://encrypted.ink/macos">Download</a>
-        </div>
-        <div id="img">
-            <img src="hello.png" alt="yo" />
-        </div>
-        <div>
-            <a id="deeplink">Open App</a>
-        </div>
-        <div id="footer">
-            <h3>Sign crypto transactions with Encrypted Ink</h3>
+    <div class="container">
+        <div id="grid">
+            <div id="title">
+                <h2>Available on the App Store</h2>
+            </div>
+            <div></div>
+            <div></div>
+            <div id="download-container">
+                <a href="https://encrypted.ink/macos">Download</a>
+            </div>
+            <div id="img">
+                <img src="hello.png" alt="yo" />
+            </div>
+            <div id="deeplink-container">
+                <a id="deeplink">Open App</a>
+            </div>
+            <div id="footer">
+                <h3>Sign crypto transactions with Encrypted Ink</h3>
+            </div>
         </div>
     </div>
     <script>
@@ -147,9 +184,32 @@
 
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const needShowArrow = () => window.innerWidth > 768 && isSafari;
+
+        const getArrowPointCoordinates = () => ({ x: window.innerWidth - 40, y: 15 });
+        const getArrowEndCoordinates = () => {
+            const deeplink = document.getElementById("deeplink");
+            if (!deeplink) {
+                return { x: 0, y: 0 };
+            }
+            const { x, y, width } = deeplink.getBoundingClientRect();
+            return { x: x + width / 2, y: y - 20 };
+        }
+        const getArrowAngle = () => {
+            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
+            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
+            return (Math.PI / 2 + Math.atan((arrowEndY - arrowPointY) / (arrowEndX - arrowPointX))) * 180 / Math.PI;
+        };
+        const getArrowLength = () => {
+            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
+            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
+            return Math.sqrt(Math.pow(arrowPointX - arrowEndX, 2) + Math.pow(arrowPointY - arrowEndY, 2));
+        };
         const setArrow = () => {
-            document.getElementById('arrow').style.display =
+            const arrow = document.getElementById('arrow');
+            arrow.style.display =
                 needShowArrow() ? 'block' : 'none';
+            arrow.style.transform = `rotate(${getArrowAngle()}deg)`;
+            document.getElementById("arrow-1").style.height = `${getArrowLength()}px`;
         }
         setArrow();
         window.addEventListener('resize', setArrow);

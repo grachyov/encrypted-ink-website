@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Encrypted Ink</title>
+    <link rel="shortcut icon" href="favicon.png" />
+
+    <style>
+        html,
+        body,
+        .container {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .container {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body,
+        h2,
+        h3 {
+            font-size: 50px;
+            font-weight: normal;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h2 {
+            color: #1B1CA9;
+        }
+
+        h3 {
+            color: #275B5A;
+        }
+
+        a {
+            color: white;
+        }
+
+        #grid {
+            display: grid;
+            padding: 0 60px;
+            box-sizing: border-box;
+
+            grid-template-columns: 400px 250px 400px;
+            grid-template-rows: 80px 33vh 80px;
+            column-gap: 50px;
+        }
+
+        #grid div {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 5px;
+        }
+
+        #img {
+            z-index: -1;
+            transform: scale(0.9);
+        }
+
+        #footer {
+            grid-column-start: 1;
+            grid-column-end: 4;
+        }
+
+        @media screen and (max-width: 1280px) {
+            #grid {
+                grid-template-columns: 200px 200px 200px;
+            }
+
+            body,
+            h2,
+            h3 {
+                font-size: 32px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+
+            body,
+            h2,
+            h3 {
+                font-size: 28px;
+            }
+
+            #grid {
+                grid-template-columns: repeat(1, 100%);
+                grid-template-rows: 20vh 0 0 repeat(4, 20vh);
+            }
+
+            #title {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+
+            #footer {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+
+            #img img {
+                transform: scale(0.7);
+            }
+        }
+
+        #arrow {
+            position: absolute;
+            top: 15px;
+            right: 40px;
+            width: calc(15vw - 30px);
+            height: 30vh;
+            transform-origin: 100% 0;
+        }
+
+        #arrow-1,
+        #arrow-2,
+        #arrow-3 {
+            position: absolute;
+            transform-origin: 50% 0;
+            border-radius: 3px;
+            top: 0;
+            right: 0;
+            background-color: red;
+            width: 3px;
+            height: 15px;
+        }
+
+        #arrow-1 {
+            transform: translateY(-1px);
+        }
+
+        #arrow-2 {
+            transform: rotate(30deg);
+        }
+
+        #arrow-3 {
+            transform: rotate(-30deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="arrow">
+        <div id="arrow-1"></div>
+        <div id="arrow-2"></div>
+        <div id="arrow-3"></div>
+    </div>
+    <div class="container">
+        <div id="grid">
+            <div id="title">
+                <h2>Available on the App Store</h2>
+            </div>
+            <div></div>
+            <div></div>
+            <div id="download-container">
+                <a href="https://encrypted.ink/macos">Download</a>
+            </div>
+            <div id="img">
+                <img src="hello.png" alt="yo" />
+            </div>
+            <div id="deeplink-container">
+                <a id="deeplink">Open App</a>
+            </div>
+            <div id="footer">
+                <h3>Sign crypto transactions with Encrypted Ink</h3>
+            </div>
+        </div>
+    </div>
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);
+        document.getElementById("deeplink").href =
+            `encryptedink://wc?uri=${searchParams.get('uri')}`;
+
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const needShowArrow = () => window.innerWidth > 768 && isSafari;
+
+        const getArrowPointCoordinates = () => ({ x: window.innerWidth - 40, y: 15 });
+        const getArrowEndCoordinates = () => {
+            const deeplink = document.getElementById("deeplink");
+            if (!deeplink) {
+                return { x: 0, y: 0 };
+            }
+            const { x, y, width } = deeplink.getBoundingClientRect();
+            return { x: x + width / 2, y: y - 20 };
+        }
+        const getArrowAngle = () => {
+            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
+            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
+            return (Math.PI / 2 + Math.atan((arrowEndY - arrowPointY) / (arrowEndX - arrowPointX))) * 180 / Math.PI;
+        };
+        const getArrowLength = () => {
+            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
+            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
+            return Math.sqrt(Math.pow(arrowPointX - arrowEndX, 2) + Math.pow(arrowPointY - arrowEndY, 2));
+        };
+        const setArrow = () => {
+            const arrow = document.getElementById('arrow');
+            arrow.style.display =
+                needShowArrow() ? 'block' : 'none';
+            arrow.style.transform = `rotate(${getArrowAngle()}deg)`;
+            document.getElementById("arrow-1").style.height = `${getArrowLength()}px`;
+        }
+        setArrow();
+        window.addEventListener('resize', setArrow);
+    </script>
+</body>
+
+</html>

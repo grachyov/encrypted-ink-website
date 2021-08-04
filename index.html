@@ -1,37 +1,153 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <title>Encrypted Ink</title>
+    <link rel="shortcut icon" href="favicon.png" />
 
-<title>Encrypted Ink</title>
-<link rel="shortcut icon" href="favicon.png">
+    <style>
+        html,
+        body,
+        .container {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
 
-<style>
+        body {
+            background-color: black;
+        }
 
-html, body, #wrapper {
-   height:100%;
-   width: 100%;
-   margin: 0;
-   padding: 0;
-   border: 0;
-}
+        .container {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+        }
 
-body {
-  background-color: black;
-}
+        body,
+        h2,
+        h3 {
+            font-size: 50px;
+            font-weight: normal;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-#wrapper td {
-   vertical-align: middle;
-   text-align: center;
-}
-</style>
+        h2 {
+            color: #1B17B0;
+        }
+
+        h3 {
+            color: #005D5A;
+        }
+
+        a {
+            color: white;
+        }
+
+        a.class1 {
+            color: #005D5A;
+        }
+
+        #grid {
+            display: grid;
+            padding: 0 60px;
+            box-sizing: border-box;
+
+            grid-template-columns: 400px 250px 400px;
+            grid-template-rows: 80px 33vh 80px;
+            column-gap: 50px;
+        }
+
+        #grid div {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 5px;
+        }
+
+        #img {
+            z-index: -1;
+            transform: scale(0.9);
+        }
+
+        #footer {
+            grid-column-start: 1;
+            grid-column-end: 4;
+        }
+
+        @media screen and (max-width: 1280px) {
+            #grid {
+                grid-template-columns: 238px 200px 238px;
+            }
+
+            body,
+            h2,
+            h3 {
+                font-size: 32px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+
+            body,
+            h2,
+            h3 {
+                font-size: 28px;
+            }
+
+            #grid {
+                grid-template-columns: repeat(1, 100%);
+                grid-template-rows: 20vh 0 0 repeat(4, 20vh);
+            }
+
+            #title {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+
+            #footer {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+
+            #img img {
+                transform: scale(0.7);
+            }
+        }
+    </style>
 </head>
+
 <body>
-
-<table id="wrapper">
-  <tr>
-    <td><img src="hello.png" alt="yo"/></td>
-  </tr>
-</table>
-
+    <div class="container">
+        <div id="grid">
+            <div id="title">
+                <h2>Available on the App Store</h2>
+            </div>
+            <div></div>
+            <div></div>
+            <div id="download-container">
+                <a href="https://encrypted.ink/macos">Download</a>
+            </div>
+            <div id="img">
+                <img src="hello.png" alt="yo" />
+            </div>
+            <div id="deeplink-container">
+                <a id="deeplink">Open App</a>
+            </div>
+            <div id="footer">
+                <h3>Sign crypto transactions with <a href="https://encrypted.ink/twitter" class="class1">@Encrypted Ink</a></h3>
+            </div>
+        </div>
+    </div>
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);
+        document.getElementById("deeplink").href =
+            `encryptedink://wc?uri=${searchParams.get('uri')}`;
+    </script>
 </body>
+
 </html>

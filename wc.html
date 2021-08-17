@@ -191,10 +191,7 @@
     	const searchParams = new URLSearchParams(window.location.search);
     	const uri = searchParams.get('uri');
     	const deeplink = `encryptedink://wc?uri=${uri}`;
-    	if (!isSafari && uri && uri.length != 0) {
-    		window.location = deeplink;
-    	}
-
+    	
         document.getElementById("deeplink").href = deeplink;
         const needShowArrow = () => window.innerWidth > 768 && isSafari;
 

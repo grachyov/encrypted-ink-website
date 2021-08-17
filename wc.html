@@ -187,11 +187,15 @@
         </div>
     </div>
     <script>
-        const searchParams = new URLSearchParams(window.location.search);
-        document.getElementById("deeplink").href =
-            `encryptedink://wc?uri=${searchParams.get('uri')}`;
+    	const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    	const searchParams = new URLSearchParams(window.location.search);
+    	const uri = searchParams.get('uri');
+    	const deeplink = `encryptedink://wc?uri=${uri}`;
+    	if (!isSafari && uri && uri.length != 0) {
+    		window.location = deeplink;
+    	}
 
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        document.getElementById("deeplink").href = deeplink;
         const needShowArrow = () => window.innerWidth > 768 && isSafari;
 
         const getArrowPointCoordinates = () => ({ x: window.innerWidth - 40, y: 15 });

@@ -76,7 +76,7 @@
         }
 
         h3 {
-            font-size: clamp(10px, 4vw, 38px);
+            font-size: clamp(10px, 4.2vw, 38px);
             font-weight: 500;
             color: white;
             padding: 0;
@@ -84,7 +84,7 @@
         }
 
         footer {
-            font-size: clamp(10px, 8vw, 60px);
+            font-size: clamp(10px, 8vw, 70px);
             color: #005D5A;
             white-space: nowrap;
             font-weight: 800;
@@ -125,7 +125,7 @@
             display: flex;
             align-items: stretch;
             width: 100%;
-            margin-bottom: 16px;
+            margin-bottom: clamp(4px, 2vw, 12px);
         }
 
         .cell {
@@ -136,8 +136,8 @@
             border-radius: 16px;
             background-color: #181818;
             transition: background-color 200ms;
-            margin: 0 4px;
-            padding: 16px 20px;
+            margin: 0 clamp(2px, 1vw, 6px);
+            padding: 16px clamp(8px, 4vw, 20px);
         }
 
         .centered {
@@ -165,18 +165,18 @@
         }
 
         .logo {
-            width: clamp(80px, 20vw, 138px);
-            height: clamp(80px, 20vw, 138px);
+            width: clamp(60px, 20vw, 138px);
+            height: clamp(60px, 20vw, 138px);
             object-fit: contain;
             margin-right: 12px;
             position: relative;
-            top: 4px;
+            top: 2px;
         }
 
         .title-logo {
             display: flex;
             align-items: center;
-            margin: 20px 0;
+            margin: clamp(0, 0.8vw, 8px) 0;
         }
 
         .back-logo {

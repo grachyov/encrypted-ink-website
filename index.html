@@ -16,6 +16,12 @@
         }
 
         html,
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        html,
         body,
         .container {
             margin: 0;
@@ -24,7 +30,7 @@
         }
 
         .container {
-            width: 800px;
+            width: 100%;
             display: flex;
             position: relative;
             flex-direction: column;
@@ -33,14 +39,10 @@
             padding: 16px 10px 0;
         }
 
-        @media screen and (min-width: 800px) {
-            .container {
-                width: 100%;
-            }
-        }
-
         .content {
-            width: 780px;
+            position: relative;
+            max-width: 780px;
+            width: 100%;
             transform-origin: 0 0;
         }
 
@@ -62,7 +64,7 @@
             margin: 0;
             color: white;
             font-weight: 500;
-            font-size: 60px;
+            font-size: clamp(10px, 8vw, 50px);
         }
 
         h2 {
@@ -70,11 +72,11 @@
             margin: 0;
             color: #0093FF;
             font-weight: 700;
-            font-size: 48px;
+            font-size: clamp(10px, 5vw, 42px);
         }
 
         h3 {
-            font-size: 36px;
+            font-size: clamp(10px, 4vw, 38px);
             font-weight: 500;
             color: white;
             padding: 0;
@@ -82,7 +84,7 @@
         }
 
         footer {
-            font-size: 72px;
+            font-size: clamp(10px, 8vw, 60px);
             color: #005D5A;
             white-space: nowrap;
             font-weight: 800;
@@ -90,7 +92,7 @@
         }
 
         p {
-            font-size: 32px;
+            font-size: clamp(10px, 4vw, 36px);
             color: #949494;
             margin: 8px 0 0;
         }
@@ -104,8 +106,19 @@
             color: #0093FF;
         }
 
-        .link:hover {
-            text-decoration: underline;
+        @media (hover: hover) and (pointer: fine) {
+            .link:hover {
+                text-decoration: underline;
+            }
+
+            a.cell:hover {
+                background-color: #363636;
+            }
+
+            a.cell:hover .arrow {
+                border: solid white;
+                border-width: 0 clamp(2px, 1vw, 5px) clamp(2px, 1vw, 5px) 0;
+            }
         }
 
         .row {
@@ -123,12 +136,8 @@
             border-radius: 16px;
             background-color: #181818;
             transition: background-color 200ms;
-            margin: 0 8px;
+            margin: 0 4px;
             padding: 16px 20px;
-        }
-
-        a.cell:hover {
-            background-color: #363636;
         }
 
         .centered {
@@ -138,19 +147,14 @@
 
         .arrow {
             border: solid #949494;
-            border-width: 0 5px 5px 0;
+            border-width: 0 clamp(2px, 1vw, 5px) clamp(2px, 1vw, 5px) 0;
             display: inline-block;
-            padding: 7px;
+            padding: clamp(4px, 1.4vw, 7px);
             border-radius: 3px;
             ;
             transform: rotate(-45deg);
             -webkit-transform: rotate(-45deg);
             transition: border 200ms;
-        }
-
-        a.cell:hover .arrow {
-            border: solid white;
-            border-width: 0 3px 3px 0;
         }
 
         .with-arrow {
@@ -161,9 +165,10 @@
         }
 
         .logo {
-            width: 138px;
-            height: 138px;
-            margin-right: 24px;
+            width: clamp(80px, 20vw, 138px);
+            height: clamp(80px, 20vw, 138px);
+            object-fit: contain;
+            margin-right: 12px;
             position: relative;
             top: 4px;
         }
@@ -221,7 +226,7 @@
                 <div class="cell">
                     <h3>🤔 Is Encrypted Ink legit?</h3>
                     <p>Encrypted Ink is 100% <a class="link" href="https://encrypted.ink/github"
-                            target="_blank">open-source</a>,<br/>supported by <a class="link"
+                            target="_blank">open-source</a>,<br />supported by <a class="link"
                             href="https://apps.apple.com/ru/developer/zerion-llc/id1359684191?l=en"
                             target="_blank">Zerion</a>, and featured by <a class="link"
                             href="https://twitter.com/WalletConnect/status/1423272157874991106"
@@ -232,7 +237,7 @@
                 <div class="cell">
                     <h3>🔐 Is Encrypted Ink secure?</h3>
                     <p> We use <a class="link" href="https://github.com/trustwallet/wallet-core" target="_blank">Trust
-                            Wallet Core</a> to handle keys and<br/>keep them encrypted in <a class="link"
+                            Wallet Core</a> to handle keys and<br />keep them encrypted in <a class="link"
                             href="https://developer.apple.com/documentation/security/keychain_services"
                             target="_blank">Keychain</a>.</p>
                 </div>
@@ -266,17 +271,23 @@
             // 1. transform content
             // 2. enable/disable scrolls
 
-            const content = document.getElementsByClassName('content')[0];
-            const scale = window.innerWidth < containerWidth ? ((window.innerWidth - (padding * 2)) / (containerWidth - (padding * 2))).toFixed(2) : 1;
-            document.getElementsByClassName('content')[0].style.transform = `scale(${scale})`;
-            if ((content.clientHeight * scale) < window.innerHeight) {
-                document.getElementsByTagName('html')[0].scrollTop = 0;
-            }
-            document.body.style.overflowY = (content.clientHeight * scale) > (window.innerHeight - footerSize) ? 'auto' : 'hidden';
+            // const content = document.getElementsByClassName('content')[0];
+            // const scale = window.innerWidth < containerWidth ? ((window.innerWidth - (padding * 2)) / (containerWidth - (padding * 2))).toFixed(2) : 1;
+            // document.getElementsByClassName('content')[0].style.transform = `scale(${scale})`;
+            // if ((content.clientHeight * scale) < window.innerHeight) {
+            //     document.getElementsByTagName('html')[0].scrollTop = 0;
+            // }
+            // document.body.style.overflowY = (content.clientHeight * scale) > (window.innerHeight - footerSize) ? 'auto' : 'hidden';
         }
 
         window.addEventListener('resize', resizePage);
         resizePage();
+
+        // prevent zooming in ios safari
+        document.addEventListener('touchmove', function (event) {
+            if (event.scale !== 1) { event.preventDefault(); }
+        }, false);
+
     </script>
 </body>
 

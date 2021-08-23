@@ -21,7 +21,6 @@
             margin: 0;
             padding: 0;
             border: 0;
-            min-height: 100vh;
         }
 
         .container {
@@ -43,7 +42,6 @@
         .content {
             width: 780px;
             transform-origin: 0 0;
-            margin-bottom: 50px;
         }
 
         body {
@@ -86,12 +84,9 @@
         footer {
             font-size: 72px;
             color: #005D5A;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
             white-space: nowrap;
             font-weight: 800;
+            margin-top: 30px;
         }
 
         p {
@@ -107,6 +102,10 @@
 
         .link {
             color: #0093FF;
+        }
+
+        .link:hover {
+            text-decoration: underline;
         }
 
         .row {
@@ -162,9 +161,11 @@
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 138px;
+            height: 138px;
             margin-right: 24px;
+            position: relative;
+            top: 4px;
         }
 
         .title-logo {
@@ -244,16 +245,13 @@
                     </div>
                 </a>
             </div>
+            <footer>
+                <div class="row centered">
+                    © 2021 Encrypted Ink.
+                </div>
+            </footer>
         </div>
     </div>
-    <footer>
-        <!-- <div class="row centered">
-                                <img src="./favicon.svg" class="back-logo" />
-                            </div> -->
-        <div class="row centered">
-            © 2021 Encrypted Ink.
-        </div>
-    </footer>
     <script>
         const searchParams = new URLSearchParams(window.location.search);
         document.getElementById("deeplink").href =
@@ -261,13 +259,12 @@
 
         const containerWidth = 800;
         const padding = 10;
-        const footerSize = 100;
+        const footerSize = 0;
 
         const resizePage = () => {
             // we need transform page relative to it's width
             // 1. transform content
             // 2. enable/disable scrolls
-            // 3. put footer to the bottom of the page or under the content
 
             const content = document.getElementsByClassName('content')[0];
             const scale = window.innerWidth < containerWidth ? ((window.innerWidth - (padding * 2)) / (containerWidth - (padding * 2))).toFixed(2) : 1;
@@ -276,8 +273,6 @@
                 document.getElementsByTagName('html')[0].scrollTop = 0;
             }
             document.body.style.overflowY = (content.clientHeight * scale) > (window.innerHeight - footerSize) ? 'auto' : 'hidden';
-            document.getElementsByTagName('footer')[0].style.transform = `scale(${scale})`;
-            document.getElementsByTagName('footer')[0].style.position = (content.clientHeight * scale) < (window.innerHeight - footerSize) ? 'absolute' : 'relative';
         }
 
         window.addEventListener('resize', resizePage);

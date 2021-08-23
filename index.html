@@ -261,33 +261,6 @@
         const searchParams = new URLSearchParams(window.location.search);
         document.getElementById("deeplink").href =
             `encryptedink://wc?uri=${searchParams.get('uri')}`;
-
-        const containerWidth = 800;
-        const padding = 10;
-        const footerSize = 0;
-
-        const resizePage = () => {
-            // we need transform page relative to it's width
-            // 1. transform content
-            // 2. enable/disable scrolls
-
-            // const content = document.getElementsByClassName('content')[0];
-            // const scale = window.innerWidth < containerWidth ? ((window.innerWidth - (padding * 2)) / (containerWidth - (padding * 2))).toFixed(2) : 1;
-            // document.getElementsByClassName('content')[0].style.transform = `scale(${scale})`;
-            // if ((content.clientHeight * scale) < window.innerHeight) {
-            //     document.getElementsByTagName('html')[0].scrollTop = 0;
-            // }
-            // document.body.style.overflowY = (content.clientHeight * scale) > (window.innerHeight - footerSize) ? 'auto' : 'hidden';
-        }
-
-        window.addEventListener('resize', resizePage);
-        resizePage();
-
-        // prevent zooming in ios safari
-        document.addEventListener('touchmove', function (event) {
-            if (event.scale !== 1) { event.preventDefault(); }
-        }, false);
-
     </script>
 </body>
 

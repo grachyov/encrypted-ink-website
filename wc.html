@@ -2,227 +2,266 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Encrypted Ink</title>
     <link rel="shortcut icon" href="favicon.svg" />
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
         html,
         body,
         .container {
-            height: 100vh;
-            width: 100%;
             margin: 0;
             padding: 0;
             border: 0;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 10px 0;
+        }
+
+        .content {
+            position: relative;
+            max-width: 780px;
+            width: 100%;
+            transform-origin: 0 0;
         }
 
         body {
             background-color: black;
         }
 
-        .container {
-            display: flex;
-            position: relative;
-            justify-content: center;
-            align-items: center;
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        footer {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        body,
-        h2,
-        h3 {
-            font-size: 50px;
-            font-weight: normal;
-            font-family: Arial, Helvetica, sans-serif;
+        h1 {
+            padding: 0;
+            margin: 0;
+            color: white;
+            font-weight: 500;
+            font-size: clamp(10px, 8vw, 50px);
         }
 
         h2 {
-            color: #1B17B0;
+            padding: 0;
+            margin: 0;
+            color: #0093FF;
+            font-weight: 700;
+            font-size: clamp(10px, 5vw, 42px);
         }
 
         h3 {
+            font-size: clamp(10px, 4.2vw, 38px);
+            font-weight: 500;
+            color: white;
+            padding: 0;
+            margin: 0;
+        }
+
+        footer {
+            font-size: clamp(10px, 8vw, 70px);
             color: #005D5A;
+            white-space: nowrap;
+            font-weight: 800;
+            margin-top: 30px;
+        }
+
+        p {
+            font-size: clamp(10px, 4vw, 36px);
+            color: #949494;
+            margin: 8px 0 0;
         }
 
         a {
-            color: white;
+            color: currentColor;
+            text-decoration: none;
         }
 
-        a.class1 {
-            color: #005D5A;
+        .link {
+            color: #0093FF;
         }
 
-        a.class2 {
-            color: #1B17B0;
+        @media (hover: hover) and (pointer: fine) {
+            .link:hover {
+                text-decoration: underline;
+            }
+
+            a.cell:hover {
+                background-color: #363636;
+            }
+
+            a.cell:hover .arrow {
+                border: solid white;
+                border-width: 0 clamp(2px, 1vw, 5px) clamp(2px, 1vw, 5px) 0;
+            }
         }
 
-        #grid {
-            display: grid;
-            padding: 0 60px;
-            box-sizing: border-box;
-
-            grid-template-columns: 400px 250px 400px;
-            grid-template-rows: 80px 33vh 80px;
-            column-gap: 50px;
+        .row {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            margin-bottom: clamp(4px, 2vw, 12px);
         }
 
-        #grid div {
-            display: inline-flex;
+        .cell {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1 1 auto;
+            border-radius: 16px;
+            background-color: #181818;
+            transition: background-color 200ms;
+            margin: 0 clamp(2px, 1vw, 6px);
+            padding: 16px clamp(8px, 4vw, 20px);
+        }
+
+        .centered {
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 5px;
         }
 
-        #img {
-            z-index: -1;
-            transform: scale(0.9);
-        }
-
-        #footer {
-            grid-column-start: 1;
-            grid-column-end: 4;
-        }
-
-        @media screen and (max-width: 1280px) {
-            #grid {
-                grid-template-columns: 238px 200px 238px;
-            }
-
-            body,
-            h2,
-            h3 {
-                font-size: 32px;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-
-            body,
-            h2,
-            h3 {
-                font-size: 28px;
-            }
-
-            #grid {
-                grid-template-columns: repeat(1, 100%);
-                grid-template-rows: 20vh 0 0 repeat(4, 20vh);
-            }
-
-            #title {
-                grid-column-start: 1;
-                grid-column-end: 2;
-            }
-
-            #footer {
-                grid-column-start: 1;
-                grid-column-end: 2;
-            }
-
-            #img img {
-                transform: scale(0.7);
-            }
-        }
-
-        #arrow {
-            position: absolute;
-            top: 15px;
-            right: 40px;
-            width: calc(15vw - 30px);
-            height: 30vh;
-            transform-origin: 100% 0;
-        }
-
-        #arrow-1,
-        #arrow-2,
-        #arrow-3 {
-            position: absolute;
-            transform-origin: 50% 0;
+        .arrow {
+            border: solid #949494;
+            border-width: 0 clamp(2px, 1vw, 5px) clamp(2px, 1vw, 5px) 0;
+            display: inline-block;
+            padding: clamp(4px, 1.4vw, 7px);
             border-radius: 3px;
-            top: 0;
-            right: 0;
-            background-color: #FA0014;
-            width: 3px;
-            height: 15px;
+            ;
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            transition: border 200ms;
         }
 
-        #arrow-1 {
-            transform: translateY(-1px);
+        .with-arrow {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        #arrow-2 {
-            transform: rotate(30deg);
+        .logo {
+            width: clamp(60px, 20vw, 138px);
+            height: clamp(60px, 20vw, 138px);
+            object-fit: contain;
+            margin-right: 12px;
+            position: relative;
+            top: 2px;
         }
 
-        #arrow-3 {
-            transform: rotate(-30deg);
+        .title-logo {
+            display: flex;
+            align-items: center;
+            margin: clamp(0, 0.8vw, 8px) 0;
+        }
+
+        .back-logo {
+            width: 200px;
+            height: 200px;
         }
     </style>
 </head>
 
 <body>
-    <div id="arrow">
-        <div id="arrow-1"></div>
-        <div id="arrow-2"></div>
-        <div id="arrow-3"></div>
-    </div>
     <div class="container">
-        <div id="grid">
-            <div id="title">
-                <h2><a href="https://encrypted.ink/macos" style="text-decoration:none" class="class2">Available on the App Store</a></h2>
+        <div class="content">
+            <div class="row">
+                <a class="cell" href="https://encrypted.ink/macos">
+                    <div class="with-arrow">
+                        <div class="title-logo">
+                            <img src="./icon.png" class="logo" />
+                            <div>
+                                <h1>Encrypted Ink</h1>
+                                <p>Sign crypto transactions!</p>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+                </a>
             </div>
-            <div></div>
-            <div></div>
-            <div id="download-container">
-                <a href="https://encrypted.ink/macos">Download</a>
+            <div class="row">
+                <a class="cell centered" id="deeplink">
+                    <h2>🚀 Open App</h2>
+                </a>
+                <a class="cell centered" href="https://encrypted.ink/macos">
+                    <h2>🙌 Download</h2>
+                </a>
             </div>
-            <div id="img">
-                <img src="hello.svg" alt="yo" />
+            <div class="row">
+                <a class="cell centered" href="https://encrypted.ink/github" target="_blank">
+                    <h3>✨ GitHub</h3>
+                </a>
+                <a class="cell centered" href="https://encrypted.ink/twitter" target="_blank">
+                    <h3>🐣 Twitter</h3>
+                </a>
+                <a class="cell centered" href="mailto:support@encrypted.ink" target="_blank">
+                    <h3>💌 Email</h3>
+                </a>
             </div>
-            <div id="deeplink-container">
-                <a id="deeplink">Open App</a>
+            <div class="row">
+                <div class="cell">
+                    <h3>🤔 Is Encrypted Ink legit?</h3>
+                    <p>Encrypted Ink is 100% <a class="link" href="https://encrypted.ink/github"
+                            target="_blank">open-source</a>,<br />supported by <a class="link"
+                            href="https://apps.apple.com/ru/developer/zerion-llc/id1359684191?l=en"
+                            target="_blank">Zerion</a>, and featured by <a class="link"
+                            href="https://twitter.com/WalletConnect/status/1423272157874991106"
+                            target="_blank">WalletConnect</a>.</p>
+                </div>
             </div>
-            <div id="footer">
-                <h3>Sign crypto transactions with <a href="https://encrypted.ink/twitter" class="class1">@Encrypted Ink</a></h3>
+            <div class="row">
+                <div class="cell">
+                    <h3>🔐 Is Encrypted Ink secure?</h3>
+                    <p> We use <a class="link" href="https://github.com/trustwallet/wallet-core" target="_blank">Trust
+                            Wallet Core</a> to handle keys and<br />keep them encrypted in <a class="link"
+                            href="https://developer.apple.com/documentation/security/keychain_services"
+                            target="_blank">Keychain</a>.</p>
+                </div>
             </div>
+            <div class="row">
+                <a class="cell" href="https://encrypted.ink/macos">
+                    <div class="with-arrow">
+                        <h3>💗 Get Encrypted Ink now!</h3>
+                        <div class="arrow"></div>
+                    </div>
+                </a>
+            </div>
+            <footer>
+                <div class="row centered">
+                    © 2021 Encrypted Ink.
+                </div>
+            </footer>
         </div>
     </div>
     <script>
-    	const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    	const searchParams = new URLSearchParams(window.location.search);
-    	const uri = searchParams.get('uri');
-    	const deeplink = `encryptedink://wc?uri=${uri}`;
-    	
-        document.getElementById("deeplink").href = deeplink;
-        const needShowArrow = () => window.innerWidth > 768 && isSafari;
-
-        const getArrowPointCoordinates = () => ({ x: window.innerWidth - 40, y: 15 });
-        const getArrowEndCoordinates = () => {
-            const deeplink = document.getElementById("deeplink");
-            if (!deeplink) {
-                return { x: 0, y: 0 };
-            }
-            const { x, y, width } = deeplink.getBoundingClientRect();
-            return { x: x + width / 2, y: y - 20 };
-        }
-        const getArrowAngle = () => {
-            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
-            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
-            return (Math.PI / 2 + Math.atan((arrowEndY - arrowPointY) / (arrowEndX - arrowPointX))) * 180 / Math.PI;
-        };
-        const getArrowLength = () => {
-            const { x: arrowPointX, y: arrowPointY } = getArrowPointCoordinates();
-            const { x: arrowEndX, y: arrowEndY } = getArrowEndCoordinates();
-            return Math.sqrt(Math.pow(arrowPointX - arrowEndX, 2) + Math.pow(arrowPointY - arrowEndY, 2));
-        };
-        const setArrow = () => {
-            const arrow = document.getElementById('arrow');
-            arrow.style.display =
-                needShowArrow() ? 'block' : 'none';
-            arrow.style.transform = `rotate(${getArrowAngle()}deg)`;
-            document.getElementById("arrow-1").style.height = `${getArrowLength()}px`;
-        }
-        setArrow();
-        window.addEventListener('resize', setArrow);
+        const searchParams = new URLSearchParams(window.location.search);
+        document.getElementById("deeplink").href =
+            `encryptedink://wc?uri=${searchParams.get('uri')}`;
     </script>
 </body>
 
